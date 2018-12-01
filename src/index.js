@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import './fonts/font-awesome.min.css';
+import './normalize.css';
+import './example.css';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
