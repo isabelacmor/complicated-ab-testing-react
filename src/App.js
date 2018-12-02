@@ -65,8 +65,8 @@ class App extends Component {
     switch (variantName) {
       case VariantsEnum.control:
         items = [
-          <a key="0" href=""><i className="fa fa-fw fa-star-o" /><span>Favorites</span></a>,
-          <a key="1" href=""><i className="fa fa-fw fa-bell-o" /><span>Alerts</span></a>,
+          <a key="0" href="" onClick={this.onButtonClick}><i className="fa fa-fw fa-star-o" /><span>Favorites</span></a>,
+          <a key="1" href="" onClick={this.onButtonClick}><i className="fa fa-fw fa-bell-o" /><span>Alerts</span></a>,
           <a key="2" href=""><i className="fa fa-fw fa-envelope-o" /><span>Messages</span></a>,
           <a key="3" href=""><i className="fa fa-fw fa-comment-o" /><span>Comments</span></a>,
           <a key="4" href=""><i className="fa fa-fw fa-bar-chart-o" /><span>Analytics</span></a>,
@@ -76,8 +76,8 @@ class App extends Component {
 
       case VariantsEnum.variant01:
         items = [
-          <a key="0" href=""><i className="fa fa-fw fa-star-o" /><span>Favorites</span></a>,
-          <a key="1" href=""><i className="fa fa-fw fa-bell-o" /><span>Notifications</span></a>,
+          <a key="0" href="" onClick={this.onButtonClick}><i className="fa fa-fw fa-star-o" /><span>Favorites</span></a>,
+          <a key="1" href="" onClick={this.onButtonClick}><i className="fa fa-fw fa-bell-o" /><span>Notifications</span></a>,
           <a key="2" href=""><i className="fa fa-fw fa-envelope-o" /><span>Messages</span></a>,
           <a key="3" href=""><i className="fa fa-fw fa-comment-o" /><span>Comments</span></a>,
           <a key="4" href=""><i className="fa fa-fw fa-bar-chart-o" /><span>Analytics</span></a>,
@@ -87,8 +87,8 @@ class App extends Component {
 
       case VariantsEnum.variant02:
         items = [
-          <a key="0" href=""><i className="fa fa-fw fa-star-o" /><span>My favorites</span></a>,
-          <a key="1" href=""><i className="fa fa-fw fa-bell-o" /><span>Alerts</span></a>,
+          <a key="0" href="" onClick={this.onButtonClick}><i className="fa fa-fw fa-star-o" /><span>My favorites</span></a>,
+          <a key="1" href="" onClick={this.onButtonClick}><i className="fa fa-fw fa-bell-o" /><span>Alerts</span></a>,
           <a key="2" href=""><i className="fa fa-fw fa-envelope-o" /><span>Messages</span></a>,
           <a key="3" href=""><i className="fa fa-fw fa-comment-o" /><span>Comments</span></a>,
           <a key="4" href=""><i className="fa fa-fw fa-bar-chart-o" /><span>Analytics</span></a>,
@@ -117,6 +117,10 @@ class App extends Component {
     return jsx;
   }
 
+  onButtonClick(e) {
+    emitter.emitWin('hamburgerMenuIconExperiment');
+  }
+
   render() {
     return (
       <div id="outer-container" style={{height: '100%'}}>
@@ -142,3 +146,20 @@ class App extends Component {
 }
 
 export default App;
+
+// Called when the experiment is displayed to the user.
+emitter.addPlayListener(function(experimentName, variantName) {
+  console.log(`Displaying experiment ${experimentName} variant ${variantName}`);
+});
+
+
+// Called when a 'win' is emitted, in this case by this.refs.experiment.win()
+emitter.addWinListener(function(experimentName, variantName) {
+  console.log(
+      `Variant ${variantName} of experiment ${experimentName} was clicked`
+  );
+  mixpanel.track(experimentName + " " + variantName, {
+      name: experimentName,
+      variant: variantName,
+  });
+});
